@@ -708,7 +708,8 @@ var reducer = function reducer() {
 
     switch (action.type) {
         case "POST_BOOK":
-            return state = action.payload;
+            var books = state.concat(action.payload);
+            return state = books;
             break;
     }
 
@@ -720,10 +721,9 @@ var store = (0, _redux.createStore)(reducer);
 
 store.subscribe(function () {
     console.log("Current state is ", store.getState());
-    console.log("Currentprice is ", store.getState()[1].price);
 });
 
-//Step 3: create and dispatch action
+//Step 3: create and dispatch actions
 store.dispatch({
     type: "POST_BOOK",
     payload: [{
@@ -737,6 +737,16 @@ store.dispatch({
         description: "This is the second book description",
         price: 50
     }]
+});
+
+store.dispatch({
+    type: "POST_BOOK",
+    payload: {
+        id: 3,
+        title: "This is the third book title",
+        description: "This is the third book description",
+        price: 44
+    }
 });
 
 /***/ }),
