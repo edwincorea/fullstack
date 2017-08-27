@@ -3,7 +3,7 @@
 import {createStore} from "redux";
 
 //Step 1: define reducers
-const reducer = (state={}, action) => {
+const reducer = (state=[], action) => {
     switch(action.type) {
         case "POST_BOOK":
             return state = action.payload;
@@ -18,16 +18,24 @@ const store = createStore(reducer);
 
 store.subscribe(() => {
     console.log(`Current state is `, store.getState());
-    console.log(`Currentprice is `, store.getState().price);
+    console.log(`Currentprice is `, store.getState()[1].price);
 });
 
 //Step 3: create and dispatch action
 store.dispatch({
     type: "POST_BOOK", 
-    payload: {
-        id: 1,
-        title: "This is the book title",
-        description: "This is the book description",
-        price: 33.33
-    }
+    payload: [
+        {
+            id: 1,
+            title: "This is the book title",
+            description: "This is the book description",
+            price: 33.33
+        },
+        {
+            id: 2,
+            title: "This is the second book title",
+            description: "This is the second book description",
+            price: 50
+        }
+    ]
 });
