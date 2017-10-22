@@ -32,7 +32,7 @@ store.dispatch({
     ]
 });
 
-// ******* CRUD *******
+// ******* Books actions *******
 
 // add a book
 store.dispatch({
@@ -58,4 +58,13 @@ store.dispatch({
         id: 2,
         title: "Learn React in 24h"
     }
+});
+
+
+// ******* Cart actions *******
+
+// Add to cart
+store.dispatch({
+    type: "DELETE_BOOK", 
+    payload: { id: 1 }
 });
