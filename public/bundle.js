@@ -699,59 +699,16 @@ function compose() {
 "use strict";
 
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _redux = __webpack_require__(8);
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+var _reducers = __webpack_require__(24);
 
-//Step 3: define reducers
-var reducer = function reducer() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { books: [] };
-    var action = arguments[1];
+var _reducers2 = _interopRequireDefault(_reducers);
 
-    switch (action.type) {
-        case "POST_BOOK":
-            return { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)) };
-        case "DELETE_BOOK":
-            // Get a copy of current books
-            var booksDelete = [].concat(_toConsumableArray(state.books));
-
-            // Get index of book to delete
-            var indexDelete = booksDelete.findIndex(function (book) {
-                return book.id === action.payload.id;
-            });
-
-            // Use slice to remove the book at indexDelete
-            return { books: [].concat(_toConsumableArray(booksDelete.slice(0, indexDelete)), _toConsumableArray(booksDelete.slice(indexDelete + 1))) };
-
-        case "UPDATE_BOOK":
-            // Get a copy of current books
-            var booksUpdate = [].concat(_toConsumableArray(state.books));
-
-            // Get index of book to update
-            var indexUpdate = booksUpdate.findIndex(function (book) {
-                return book.id === action.payload.id;
-            });
-
-            // Create a book object with current book values and new title
-            var book = _extends({}, booksUpdate[indexUpdate], {
-                title: action.payload.title
-            });
-
-            // log updated book content to console
-            console.log("book", book);
-
-            // Use slice to remove the book at indexUpdate,
-            // replace it with new book object and concatenate with the rest of books in the array
-            return { books: [].concat(_toConsumableArray(booksUpdate.slice(0, indexUpdate)), [book], _toConsumableArray(booksUpdate.slice(indexUpdate + 1))) };
-    }
-
-    return state;
-};
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //Step 1: create the store
-var store = (0, _redux.createStore)(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+var store = (0, _redux.createStore)(_reducers2.default, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 store.subscribe(function () {
     console.log("Current state is ", store.getState());
@@ -1410,6 +1367,86 @@ function applyMiddleware() {
     };
   };
 }
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _redux = __webpack_require__(8);
+
+var _booksReducers = __webpack_require__(25);
+
+exports.default = (0, _redux.combineReducers)({
+    books: _booksReducers.booksReducers
+});
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+//Books Reducers
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+var booksReducers = exports.booksReducers = function booksReducers() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { books: [] };
+    var action = arguments[1];
+
+    switch (action.type) {
+        case "POST_BOOK":
+            return { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)) };
+        case "DELETE_BOOK":
+            // Get a copy of current books
+            var booksDelete = [].concat(_toConsumableArray(state.books));
+
+            // Get index of book to delete
+            var indexDelete = booksDelete.findIndex(function (book) {
+                return book.id === action.payload.id;
+            });
+
+            // Use slice to remove the book at indexDelete
+            return { books: [].concat(_toConsumableArray(booksDelete.slice(0, indexDelete)), _toConsumableArray(booksDelete.slice(indexDelete + 1))) };
+
+        case "UPDATE_BOOK":
+            // Get a copy of current books
+            var booksUpdate = [].concat(_toConsumableArray(state.books));
+
+            // Get index of book to update
+            var indexUpdate = booksUpdate.findIndex(function (book) {
+                return book.id === action.payload.id;
+            });
+
+            // Create a book object with current book values and new title
+            var book = _extends({}, booksUpdate[indexUpdate], {
+                title: action.payload.title
+            });
+
+            // log updated book content to console
+            console.log("book", book);
+
+            // Use slice to remove the book at indexUpdate,
+            // replace it with new book object and concatenate with the rest of books in the array
+            return { books: [].concat(_toConsumableArray(booksUpdate.slice(0, indexUpdate)), [book], _toConsumableArray(booksUpdate.slice(indexUpdate + 1))) };
+    }
+
+    return state;
+};
 
 /***/ })
 /******/ ]);
