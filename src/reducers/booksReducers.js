@@ -1,8 +1,27 @@
 "use strict";
 
+const initialState = {
+    books: [
+        {
+            id: 1,
+            title: "A book title",
+            description: "A book description",
+            price: 44.33
+        },
+        {
+            id: 2,
+            title: "Another book title",
+            description: "Another book description",
+            price: 55.00
+        }
+    ]
+};
+
 //Books Reducers
-export const booksReducers = (state={books: []}, action) => {
+export const booksReducers = (state = initialState, action) => {
     switch(action.type) {
+        case "GET_BOOKS":
+            return {...state, books: [...state.books]};
         case "POST_BOOK":
             return {books: [...state.books, ...action.payload]};
         case "DELETE_BOOK":

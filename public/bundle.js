@@ -1387,8 +1387,6 @@ exports.default = (0, _redux.combineReducers)({
 "use strict";
 
 
-//Books Reducers
-
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -1397,11 +1395,28 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
+var initialState = {
+    books: [{
+        id: 1,
+        title: "A book title",
+        description: "A book description",
+        price: 44.33
+    }, {
+        id: 2,
+        title: "Another book title",
+        description: "Another book description",
+        price: 55.00
+    }]
+};
+
+//Books Reducers
 var booksReducers = exports.booksReducers = function booksReducers() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { books: [] };
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
     var action = arguments[1];
 
     switch (action.type) {
+        case "GET_BOOKS":
+            return _extends({}, state, { books: [].concat(_toConsumableArray(state.books)) });
         case "POST_BOOK":
             return { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)) };
         case "DELETE_BOOK":
@@ -1494,11 +1509,18 @@ var addToCart = exports.addToCart = function addToCart(book) {
 "use strict";
 
 
-// POST a book
+// GET books
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+var getBooks = exports.getBooks = function getBooks() {
+    return {
+        type: "GET_BOOKS"
+    };
+};
+
+// POST a book
 var postBooks = exports.postBooks = function postBooks(books) {
     return {
         type: "POST_BOOK",
@@ -22439,6 +22461,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(66);
 
+var _redux = __webpack_require__(1);
+
+var _booksActions = __webpack_require__(29);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22457,6 +22483,12 @@ var BooksList = function (_React$Component) {
     }
 
     _createClass(BooksList, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            // Dispatch an action
+            this.props.getBooks();
+        }
+    }, {
         key: "render",
         value: function render() {
             var booksList = this.props.books.map(function (book) {
@@ -22502,7 +22534,13 @@ var mapStateToProps = function mapStateToProps(state) {
     };
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(BooksList);
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)({
+        getBooks: _booksActions.getBooks
+    }, dispatch);
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BooksList);
 
 /***/ }),
 /* 61 */
