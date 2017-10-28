@@ -1,5 +1,10 @@
 "use strict";
 
+// React
+import React from "react";
+import {render} from "react-dom";
+import BooksList from "./components/pages/booksList";
+
 import {createStore, applyMiddleware, compose} from "redux";
 import logger from "redux-logger";
 
@@ -13,6 +18,10 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
     reducers, 
     composeEnhancers(middleware)
+);
+
+render(
+    <BooksList />, document.getElementById("app")
 );
 
 //Step 2: create and dispatch actions
