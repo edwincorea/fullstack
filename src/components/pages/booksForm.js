@@ -1,8 +1,31 @@
 "use strict";
 import React from "react";
+import {findDOMNode} from "react-dom";
 import {Well, Panel, FormGroup, FormControl, ControlLabel, Button} from "react-bootstrap";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+
+import {postBooks} from "../../actions/booksActions";
 
 class BooksForm extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(){        
+        const book = [{
+            title: findDOMNode(this.refs.title).value,
+            description: findDOMNode(this.refs.description).value,
+            price: findDOMNode(this.refs.price).value
+        }];
+
+        this.props.postBooks(book, () => {
+            this.props.history.push("/");
+        });        
+    }
+
     render() {
         return (
             <Well>
@@ -28,12 +51,16 @@ class BooksForm extends React.Component {
                             placeholder="Enter Price"
                             ref="price" />           
                     </FormGroup>   
-                    <Button bsStyle="primary">Save book</Button>
+                    <Button bsStyle="primary" onClick={this.handleSubmit}>Save book</Button>
                 </Panel>
             </Well>
         );
     }
 }
 
-export default BooksForm;
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({postBooks}, dispatch);
+};
+
+export default connect(null, mapDispatchToProps)(BooksForm);
 

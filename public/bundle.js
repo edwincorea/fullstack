@@ -42781,7 +42781,15 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = __webpack_require__(33);
+
 var _reactBootstrap = __webpack_require__(195);
+
+var _reactRedux = __webpack_require__(20);
+
+var _redux = __webpack_require__(7);
+
+var _booksActions = __webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -42794,13 +42802,31 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var BooksForm = function (_React$Component) {
     _inherits(BooksForm, _React$Component);
 
-    function BooksForm() {
+    function BooksForm(props) {
         _classCallCheck(this, BooksForm);
 
-        return _possibleConstructorReturn(this, (BooksForm.__proto__ || Object.getPrototypeOf(BooksForm)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (BooksForm.__proto__ || Object.getPrototypeOf(BooksForm)).call(this, props));
+
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
+        return _this;
     }
 
     _createClass(BooksForm, [{
+        key: "handleSubmit",
+        value: function handleSubmit() {
+            var _this2 = this;
+
+            var book = [{
+                title: (0, _reactDom.findDOMNode)(this.refs.title).value,
+                description: (0, _reactDom.findDOMNode)(this.refs.description).value,
+                price: (0, _reactDom.findDOMNode)(this.refs.price).value
+            }];
+
+            this.props.postBooks(book, function () {
+                _this2.props.history.push("/");
+            });
+        }
+    }, {
         key: "render",
         value: function render() {
             return _react2.default.createElement(
@@ -42850,7 +42876,7 @@ var BooksForm = function (_React$Component) {
                     ),
                     _react2.default.createElement(
                         _reactBootstrap.Button,
-                        { bsStyle: "primary" },
+                        { bsStyle: "primary", onClick: this.handleSubmit },
                         "Save book"
                     )
                 )
@@ -42861,7 +42887,11 @@ var BooksForm = function (_React$Component) {
     return BooksForm;
 }(_react2.default.Component);
 
-exports.default = BooksForm;
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)({ postBooks: _booksActions.postBooks }, dispatch);
+};
+
+exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(BooksForm);
 
 /***/ })
 /******/ ]);
