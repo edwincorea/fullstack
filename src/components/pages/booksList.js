@@ -2,9 +2,10 @@
 import React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {Grid, Col, Row, Button} from "react-bootstrap";
+import {Grid, Col, Row} from "react-bootstrap";
 
 import BookItem from "./bookItem";
+import BooksForm from "./booksForm";
 import {getBooks} from "../../actions/booksActions";
 
 class BooksList extends React.Component {
@@ -28,8 +29,11 @@ class BooksList extends React.Component {
         });
         return (
             <Grid>
-                <Row style={{marginTop: "15px"}}>
-                    {booksList}
+                <Row>
+                    <Col xs={12} sm={6}>
+                        <BooksForm />
+                    </Col>
+                    {booksList}                    
                 </Row>
             </Grid>
         );
