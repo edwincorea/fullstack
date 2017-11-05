@@ -1,4 +1,3 @@
-"use strict";
 import React from "react";
 import {findDOMNode} from "react-dom";
 import {Well, Panel, FormGroup, FormControl, ControlLabel, Button} from "react-bootstrap";

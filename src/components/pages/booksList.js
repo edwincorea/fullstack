@@ -1,4 +1,3 @@
-"use strict";
 import React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -6,6 +5,8 @@ import {Grid, Col, Row} from "react-bootstrap";
 
 import BookItem from "./bookItem";
 import BooksForm from "./booksForm";
+import Cart from "./cart";
+
 import {getBooks} from "../../actions/booksActions";
 
 class BooksList extends React.Component {
@@ -29,6 +30,9 @@ class BooksList extends React.Component {
         });
         return (
             <Grid>
+                <Row>
+                    <Cart />
+                </Row>
                 <Row>
                     <Col xs={12} sm={6}>
                         <BooksForm />
