@@ -31212,9 +31212,9 @@ var BooksList = function (_React$Component) {
             var booksList = this.props.books.map(function (book) {
                 return _react2.default.createElement(
                     _reactBootstrap.Col,
-                    { xs: 12, sm: 6, md: 4, key: book.id },
+                    { xs: 12, sm: 6, md: 4, key: book._id },
                     _react2.default.createElement(_bookItem2.default, {
-                        id: book.id,
+                        _id: book._id,
                         title: book.title,
                         description: book.description,
                         price: book.price
@@ -42588,7 +42588,7 @@ var BookItem = function (_React$Component) {
         key: "handleCart",
         value: function handleCart() {
             var book = [].concat(_toConsumableArray(this.props.cart), [{
-                id: this.props.id,
+                _id: this.props._id,
                 title: this.props.title,
                 description: this.props.description,
                 price: this.props.price
@@ -42828,12 +42828,12 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 var initialState = {
     books: [{
-        id: 1,
+        _id: 1,
         title: "A book title",
         description: "A book description",
         price: 44.33
     }, {
-        id: 2,
+        _id: 2,
         title: "Another book title",
         description: "Another book description",
         price: 55.00
@@ -42857,7 +42857,7 @@ var booksReducers = exports.booksReducers = function booksReducers() {
 
                 // Get index of book to delete
                 var indexDelete = booksDelete.findIndex(function (book) {
-                    return book.id === action.payload.id;
+                    return book._id === action.payload._id;
                 });
 
                 // Use slice to remove the book at indexDelete
@@ -42870,16 +42870,13 @@ var booksReducers = exports.booksReducers = function booksReducers() {
 
                 // Get index of book to update
                 var indexUpdate = booksUpdate.findIndex(function (book) {
-                    return book.id === action.payload.id;
+                    return book._id === action.payload._id;
                 });
 
                 // Create a book object with current book values and new title
                 var book = _extends({}, booksUpdate[indexUpdate], {
                     title: action.payload.title
                 });
-
-                // log updated book content to console
-                console.log("book", book);
 
                 // Use slice to remove the book at indexUpdate,
                 // replace it with new book object and concatenate with the rest of books in the array
@@ -42994,7 +42991,7 @@ var Cart = function (_React$Component) {
             var cartItemsList = this.props.cart.map(function (cart) {
                 return _react2.default.createElement(
                     _reactBootstrap.Panel,
-                    { key: cart.id },
+                    { key: cart._id },
                     _react2.default.createElement(
                         _reactBootstrap.Row,
                         null,
@@ -43005,6 +43002,59 @@ var Cart = function (_React$Component) {
                                 "h6",
                                 null,
                                 cart.title
+                            ),
+                            _react2.default.createElement(
+                                "span",
+                                null,
+                                "    "
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.Col,
+                            { xs: 12, sm: 2 },
+                            _react2.default.createElement(
+                                "h6",
+                                null,
+                                "usd. ",
+                                cart.price
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.Col,
+                            { xs: 12, sm: 2 },
+                            _react2.default.createElement(
+                                "h6",
+                                null,
+                                "qty. ",
+                                _react2.default.createElement(_reactBootstrap.Label, { bsStyle: "success" })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.Col,
+                            { xs: 6, sm: 4 },
+                            _react2.default.createElement(
+                                _reactBootstrap.ButtonGroup,
+                                { style: { minWidth: "300px" } },
+                                _react2.default.createElement(
+                                    _reactBootstrap.Button,
+                                    { bsStyle: "default", bsSize: "small" },
+                                    "-"
+                                ),
+                                _react2.default.createElement(
+                                    _reactBootstrap.Button,
+                                    { bsStyle: "default", bsSize: "small" },
+                                    "+"
+                                ),
+                                _react2.default.createElement(
+                                    "span",
+                                    null,
+                                    "     "
+                                ),
+                                _react2.default.createElement(
+                                    _reactBootstrap.Button,
+                                    { bsStyle: "danger", bsSize: "small" },
+                                    "Delete"
+                                )
                             )
                         )
                     )
