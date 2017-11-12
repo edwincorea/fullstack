@@ -1,6 +1,10 @@
 import React from "react";
-import {connect} from "react-redux";
 import {Panel, Col, Row, Well, Button, ButtonGroup, Label} from "react-bootstrap";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+
+import DeleteCartItemButton from "./deleteCartItemButton";
+import {deleteCartItem} from "../../actions/cartActions";
 
 class Cart extends React.Component {
     constructor(props){
@@ -8,6 +12,7 @@ class Cart extends React.Component {
 
         this.renderEmptyCart = this.renderEmptyCart.bind(this);
         this.renderCart = this.renderCart.bind(this);        
+        this.onDeleteCartItem = this.onDeleteCartItem.bind(this);        
     }
 
     renderEmptyCart() {
@@ -37,7 +42,10 @@ class Cart extends React.Component {
                                 <Button bsStyle="default" bsSize="small">-</Button>
                                 <Button bsStyle="default" bsSize="small">+</Button>
                                 <span>     </span>
-                                <Button bsStyle="danger" bsSize="small">Delete</Button>
+                                <DeleteCartItemButton 
+                                    onDeleteCartItem={this.onDeleteCartItem}
+                                    cartId={cart._id}
+                                />
                             </ButtonGroup>
                         </Col>
                         
@@ -52,6 +60,24 @@ class Cart extends React.Component {
             </Panel>
         );
     }
+
+    onDeleteCartItem(_id){
+        // Get a copy of current books in cart
+        const currentBookToDelete = this.props.cart;
+        
+        // Get index of book to delete
+        const indexDelete = currentBookToDelete.findIndex(
+            cart => cart._id === _id
+        );
+
+        // Use slice to remove the book at indexDelete
+        const cartAfterDelete = [
+            ...currentBookToDelete.slice(0, indexDelete), 
+            ...currentBookToDelete.slice(indexDelete + 1)
+        ];
+                
+        this.props.deleteCartItem(cartAfterDelete);
+    }        
 
     render() {        
         if (this.props.cart.length > 0) {
@@ -69,5 +95,11 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(Cart);
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        deleteCartItem
+    }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);
 
