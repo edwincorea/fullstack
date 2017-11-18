@@ -9,8 +9,6 @@ import {createStore, applyMiddleware, compose} from "redux";
 import logger from "redux-logger";
 
 import reducers from "./reducers";
-import {addToCart} from "./actions/cartActions";
-import {postBooks, deleteBook, updateBook} from "./actions/booksActions";
 
 //Step 1: create the store
 const middleware = applyMiddleware(logger);
