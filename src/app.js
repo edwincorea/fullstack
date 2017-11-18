@@ -1,8 +1,9 @@
 // React
-import React from "react";
 import {render} from "react-dom";
 import {Provider} from "react-redux";
 
+import Menu from "./components/menu";
+import Footer from "./components/footer";
 import BooksList from "./components/pages/booksList";
 
 import {createStore, applyMiddleware, compose} from "redux";
@@ -20,6 +21,10 @@ const store = createStore(
 
 render(
     <Provider store={store}>
-        <BooksList />
+        <div>
+            <Menu />
+            <BooksList />
+            <Footer />
+        </div>        
     </ Provider>, document.getElementById("app")
 );
