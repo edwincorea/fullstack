@@ -3,6 +3,8 @@ import {Nav, NavItem, Navbar, Badge} from "react-bootstrap";
 
 class Menu extends React.Component {
     render() {
+        const totalCartItems = this.props.totalCartItems;
+        console.log(this.props.totalCartItems);
         return (
             <Navbar inverse fixedTop>
                 <Navbar.Header>
@@ -18,8 +20,9 @@ class Menu extends React.Component {
                     </Nav>
                     <Nav pullRight>
                         <NavItem eventKey={1} href="/admin">Admin</NavItem>
-                        <NavItem eventKey={2} href="/cart">Your Cart</NavItem>                        
-                        <Badge className="badge">1</Badge>
+                        <NavItem eventKey={2} href="/cart">Your Cart
+                            { (totalCartItems > 0) ? <Badge className="badge">{totalCartItems}</Badge> : ""}
+                        </NavItem>
                     </Nav>                    
                 </Navbar.Collapse>
             </Navbar>                                        
