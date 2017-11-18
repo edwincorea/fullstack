@@ -2,10 +2,7 @@
 import React from "react";
 import {render} from "react-dom";
 import {Provider} from "react-redux";
-
-import Menu from "./components/menu";
-import Footer from "./components/footer";
-import BooksList from "./components/pages/booksList";
+import {Router, Route, IndexRoute, browserHistory} from "react-router";
 
 import {createStore, applyMiddleware, compose} from "redux";
 import logger from "redux-logger";
@@ -20,12 +17,22 @@ const store = createStore(
     composeEnhancers(middleware)
 );
 
-render(
+import BooksList from "./components/pages/booksList";
+import Cart from "./components/pages/cart";
+import BooksForm from "./components/pages/booksForm";
+import Main from "./main";
+
+const Routes = (
     <Provider store={store}>
-        <div>
-            <Menu />
-            <BooksList />
-            <Footer />
-        </div>        
-    </ Provider>, document.getElementById("app")
+        <Router history={browserHistory}>
+            <Route path="/" component={Main}>
+                <IndexRoute component={BooksList} />
+                <Route path="/admin" component={BooksForm} />
+                <Route path="/cart" component={Cart} />
+            </Route>
+        </Router>
+    </ Provider>
+);
+
+render(Routes, document.getElementById("app")
 );

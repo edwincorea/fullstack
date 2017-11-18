@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "eslint": "eslint .\\src\\ --ext .js",
-    "test": ""    
+    "test": ""
   },
   "keywords": [],
   "author": "",
@@ -27,7 +27,7 @@
     "react-bootstrap": "^0.31.5",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
-    "react-router": "^3.0.2",
+    "react-router": "^3.2.0",
     "redux": "^3.7.2",
     "save": "^2.3.1"
   }
