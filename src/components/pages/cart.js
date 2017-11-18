@@ -1,5 +1,5 @@
 import React from "react";
-import {Panel, Col, Row, Well, Button, ButtonGroup, Label} from "react-bootstrap";
+import {Modal, Panel, Col, Row, Well, Button, ButtonGroup, Label} from "react-bootstrap";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 
@@ -12,12 +12,19 @@ class Cart extends React.Component {
     constructor(props){
         super(props);
 
+        this.state = {
+            showModal: false
+        };
+
         this.renderEmptyCart = this.renderEmptyCart.bind(this);
         this.renderCart = this.renderCart.bind(this);        
         this.onDeleteCartItem = this.onDeleteCartItem.bind(this);        
 
         this.onIncrementCartItemQuantity = this.onIncrementCartItemQuantity.bind(this);        
         this.onDecrementCartItemQuantity = this.onDecrementCartItemQuantity.bind(this);        
+
+        this.open = this.open.bind(this);
+        this.close = this.close.bind(this);
     }
 
     renderEmptyCart() {
@@ -71,6 +78,29 @@ class Cart extends React.Component {
         return (
             <Panel header="Cart" bsStyle="primary">
                 {cartItemsList}
+                <Row>
+                    <Col xs={12}>
+                        <h6>Total amount:</h6>
+                        <Button onClick={this.open} bsStyle="success" bsSize="small">
+                            Checkout
+                        </Button>
+                    </Col>
+                </Row>
+                <Modal show={this.state.showModal} onHide={this.close}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Thank you!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <h6>Your order has been saved</h6>
+                        <p>You will receive an email confirmation.</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Col xs={6}>
+                            <h6>total $:</h6>
+                        </Col>
+                        <Button onClick={this.close}>Close</Button>
+                    </Modal.Footer>
+                </Modal>                
             </Panel>
         );
     }
@@ -110,6 +140,18 @@ class Cart extends React.Component {
             return this.renderEmptyCart();
         }
     }
+
+    open() {
+        this.setState({
+            showModal: true
+        });
+    }
+
+    close() {
+        this.setState({
+            showModal: false
+        });
+    }    
 }
 
 const mapStateToProps = (state) => {
