@@ -44,6 +44,20 @@ app.get("/book", function(req, res) {
     });
 });
 
+// Delete Book
+app.delete("/book/:_id", function(req, res) {
+    var query = {_id: req.params._id};
+
+    Book.remove(query, function(err, books) {
+        if(err) {
+            throw err;
+        }
+
+        res.json(books);
+    });
+
+});
+
 
 app.get("*", function(req, res){
     res.sendFile(path.resolve(__dirname, "public", "index.html"));
