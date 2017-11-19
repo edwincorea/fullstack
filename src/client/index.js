@@ -5,12 +5,13 @@ import {Provider} from "react-redux";
 
 import {applyMiddleware, compose, createStore} from "redux";
 import logger from "redux-logger";
+import thunk from "redux-thunk";
 
 // Import combined reducers
 import reducers from "./reducers";
 
 //Step 1: create the store
-const middleware = applyMiddleware(logger);
+const middleware = applyMiddleware(thunk, logger);
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
     reducers, 

@@ -15,15 +15,12 @@ class BooksForm extends React.Component {
     }
 
     handleSubmit(){        
-        //a random number between 3 and 100
-        const randId = Math.floor((Math.random() * 100) + 3);
         const title = findDOMNode(this.refs.title).value;
         const description = findDOMNode(this.refs.description).value;
         const price = findDOMNode(this.refs.price).value;
 
         if (title && description && price) {
             const book = [{
-                _id: randId,
                 title,
                 description,
                 price 
