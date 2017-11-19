@@ -3,6 +3,8 @@ import { updateCart } from "../actions/cartActions";
 //Cart Reducers
 export const cartReducers = (state={cart: []}, action) => {
     switch(action.type) {
+    case "GET_CART":
+        return {...state, cart: [...state.cart]};        
     case "ADD_TO_CART": {
         const {amount, qty} = calculateTotals(action.payload);
 

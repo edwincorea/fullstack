@@ -1,4 +1,8 @@
 // Add to Cart
+export const getCart = () => ({
+    type: "GET_CART"
+});
+
 export const addToCart = (book) => ({
     type: "ADD_TO_CART", 
     payload: book

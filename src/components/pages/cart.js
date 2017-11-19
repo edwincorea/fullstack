@@ -6,7 +6,7 @@ import {bindActionCreators} from "redux";
 import DeleteCartItemButton from "./deleteCartItemButton";
 import UpdateCartItemQuantityButton from "./updateCartItemQuantityButton";
 
-import {deleteCartItem, updateCart} from "../../actions/cartActions";
+import {getCart, deleteCartItem, updateCart} from "../../actions/cartActions";
 
 class Cart extends React.Component {
     constructor(props){
@@ -26,6 +26,10 @@ class Cart extends React.Component {
         this.open = this.open.bind(this);
         this.close = this.close.bind(this);
     }
+
+    componentDidMount(){
+        this.props.getCart();
+    }    
 
     renderEmptyCart() {
         return (
@@ -163,6 +167,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
+        getCart,
         deleteCartItem,
         updateCart
     }, dispatch);

@@ -2,15 +2,15 @@ const initialState = {
     books: [
         {
             _id: 1,
-            title: "A book title",
-            description: "A book description",
-            price: 44.33
+            title: "Learn React in 24h",
+            description: "This is the book description",
+            price: 33.33
         },
         {
             _id: 2,
-            title: "Another book title",
-            description: "Another book description",
-            price: 55.00
+            title: "Learn Redux in 24h",
+            description: "This is the book description",
+            price: 45.00
         }
     ]
 };

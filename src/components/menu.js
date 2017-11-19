@@ -1,9 +1,16 @@
 import React from "react";
 import {Nav, NavItem, Navbar, Badge} from "react-bootstrap";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { getCart } from "../../src/actions/cartActions";
 
 class Menu extends React.Component {
+    componentDidMount(){
+        this.props.getCart();
+    }
+
     render() {
-        const totalCartItems = this.props.totalCartItems;
+        const totalQty = this.props.totalQty;
         
         return (
             <Navbar inverse fixedTop>
@@ -21,7 +28,7 @@ class Menu extends React.Component {
                     <Nav pullRight>
                         <NavItem eventKey={1} href="/admin">Admin</NavItem>
                         <NavItem eventKey={2} href="/cart">Your Cart
-                            { (totalCartItems > 0) ? <Badge className="badge">{totalCartItems}</Badge> : ""}
+                            { totalQty > 0 ? <Badge className="badge">{totalQty}</Badge> : ""}
                         </NavItem>
                     </Nav>                    
                 </Navbar.Collapse>
@@ -30,4 +37,17 @@ class Menu extends React.Component {
     }
 }
 
-export default Menu;
+const mapStateToProps = (state) => {
+    return {
+        totalQty: state.cart.totalQty
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators(
+        {
+            getCart
+        }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);
