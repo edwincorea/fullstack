@@ -20,6 +20,17 @@ mongoose.connect("mongodb://localhost:27017/bookshop");
 
 var Book = require("./src/server/models/book");
 
+// GET Book
+app.get("/book", function(req, res) {
+    Book.find(function(err, books){
+        if(err){
+            throw err;
+        }
+
+        res.json(books);
+    });
+});
+
 // POST Book
 app.post("/book", function(req, res) {
     var book = req.body;
@@ -33,10 +44,26 @@ app.post("/book", function(req, res) {
     });
 });
 
-// GET Book
-app.get("/book", function(req, res) {
-    Book.find(function(err, books){
-        if(err){
+// Update Book
+app.put("/book/:_id", function(req, res) {
+    var book = req.body;
+    var query = req.params._id;
+
+    // if the field doesn't exist, $set will add a new field
+    var update = {
+        "$set": {
+            "title": book.title,
+            "description": book.description,
+            "image": book.image,
+            "price": book.price
+        }
+    };
+
+    // when true, returns updated document
+    var options = {new: true};
+
+    Book.findOneAndUpdate(query, update, options, function(err, books) {
+        if(err) {
             throw err;
         }
 
