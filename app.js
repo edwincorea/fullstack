@@ -33,6 +33,17 @@ app.post("/book", function(req, res) {
     });
 });
 
+// GET Book
+app.get("/book", function(req, res) {
+    Book.find(function(err, books){
+        if(err){
+            throw err;
+        }
+
+        res.json(books);
+    });
+});
+
 
 app.get("*", function(req, res){
     res.sendFile(path.resolve(__dirname, "public", "index.html"));
