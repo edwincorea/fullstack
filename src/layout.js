@@ -4,7 +4,7 @@ import Footer from "./components/footer";
 
 import {connect} from "react-redux";
 
-class Main extends React.Component {
+class Layout extends React.Component {
     render() {
         return (
             <div>
@@ -22,4 +22,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(Main);
+export default connect(mapStateToProps)(Layout);

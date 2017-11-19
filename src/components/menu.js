@@ -4,7 +4,7 @@ import {Nav, NavItem, Navbar, Badge} from "react-bootstrap";
 class Menu extends React.Component {
     render() {
         const totalCartItems = this.props.totalCartItems;
-        console.log(this.props.totalCartItems);
+        
         return (
             <Navbar inverse fixedTop>
                 <Navbar.Header>

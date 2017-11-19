@@ -15,15 +15,24 @@ class BooksForm extends React.Component {
     }
 
     handleSubmit(){        
-        const book = [{
-            title: findDOMNode(this.refs.title).value,
-            description: findDOMNode(this.refs.description).value,
-            price: findDOMNode(this.refs.price).value
-        }];
+        //a random number between 3 and 100
+        const randId = Math.floor((Math.random() * 100) + 3);
+        const title = findDOMNode(this.refs.title).value;
+        const description = findDOMNode(this.refs.description).value;
+        const price = findDOMNode(this.refs.price).value;
 
-        this.props.postBooks(book, () => {
-            this.props.history.push("/");
-        });        
+        if (title && description && price) {
+            const book = [{
+                _id: randId,
+                title,
+                description,
+                price 
+            }];
+    
+            this.props.postBooks(book, () => {
+                this.props.history.push("/");
+            });        
+        }        
     }
 
     onDelete(){

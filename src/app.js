@@ -2,7 +2,7 @@
 import React from "react";
 import {render} from "react-dom";
 import {Provider} from "react-redux";
-import {Router, Route, IndexRoute, browserHistory} from "react-router";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 import {createStore, applyMiddleware, compose} from "redux";
 import logger from "redux-logger";
@@ -20,19 +20,20 @@ const store = createStore(
 import BooksList from "./components/pages/booksList";
 import Cart from "./components/pages/cart";
 import BooksForm from "./components/pages/booksForm";
-import Main from "./main";
+import Layout from "./layout";
 
-const Routes = (
+const Root = (
     <Provider store={store}>
-        <Router history={browserHistory}>
-            <Route path="/" component={Main}>
-                <IndexRoute component={BooksList} />
-                <Route path="/admin" component={BooksForm} />
-                <Route path="/cart" component={Cart} />
-            </Route>
-        </Router>
+        <Layout>
+            <Router>
+                <Switch>
+                    <Route exact path="/" component={BooksList} />
+                    <Route path="/admin" component={BooksForm} />
+                    <Route path="/cart" component={Cart} />                
+                </Switch>
+            </Router>
+        </Layout>
     </ Provider>
 );
 
-render(Routes, document.getElementById("app")
-);
+render(Root, document.getElementById("app"));
