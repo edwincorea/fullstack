@@ -5,9 +5,6 @@ var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 
-var index = require("./routes/index");
-var users = require("./routes/users");
-
 var app = express();
 
 app.use(favicon(path.join(__dirname, "public", "favicon.png")));
@@ -16,6 +13,26 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+// APIs
+var mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost:27017/bookshop");
+
+var Book = require("./src/server/models/book");
+
+// POST Book
+app.post("/book", function(req, res) {
+    var book = req.body;
+
+    Book.create(book, function(err, books) {
+        if(err) {
+            throw err;
+        }
+
+        res.json(books);
+    });
+});
+
 
 app.get("*", function(req, res){
     res.sendFile(path.resolve(__dirname, "public", "index.html"));

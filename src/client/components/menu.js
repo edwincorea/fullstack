@@ -2,7 +2,7 @@ import React from "react";
 import {Nav, NavItem, Navbar, Badge} from "react-bootstrap";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getCart } from "../../src/actions/cartActions";
+import { getCart } from "../../client/actions/cartActions";
 
 class Menu extends React.Component {
     componentDidMount(){

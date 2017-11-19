@@ -1,10 +1,15 @@
-import { updateCart } from "../actions/cartActions";
-
 //Cart Reducers
 export const cartReducers = (state={cart: []}, action) => {
     switch(action.type) {
-    case "GET_CART":
-        return {...state, cart: [...state.cart]};        
+    case "GET_CART": {
+        const {amount, qty} = calculateTotals(action.payload);
+        
+        return {...state,
+            cart: action.payload,
+            totalAmount: amount,
+            totalQty: qty
+        };
+    }
     case "ADD_TO_CART": {
         const {amount, qty} = calculateTotals(action.payload);
 
