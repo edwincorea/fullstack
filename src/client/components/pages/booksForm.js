@@ -23,7 +23,7 @@ class BooksForm extends React.Component {
             const book = [{
                 title,
                 description,
-                price 
+                price
             }];
     
             this.props.postBooks(book, () => {
@@ -35,7 +35,7 @@ class BooksForm extends React.Component {
     onDelete(){
         const bookId = findDOMNode(this.refs.delete).value;
 
-        if (bookId > 0) {
+        if (bookId.toString() !== "0") {                        
             this.props.deleteBook(bookId);
         }        
     }

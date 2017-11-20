@@ -10578,7 +10578,7 @@ var BooksForm = function (_React$Component) {
         value: function onDelete() {
             var bookId = (0, _reactDom.findDOMNode)(this.refs.delete).value;
 
-            if (bookId > 0) {
+            if (bookId.toString() !== "0") {
                 this.props.deleteBook(bookId);
             }
         }
@@ -10714,8 +10714,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // GET books
 var getBooks = exports.getBooks = function getBooks() {
-    return {
-        type: "GET_BOOKS"
+    return function (dispatch) {
+        _axios2.default.get("/book").then(function (response) {
+            dispatch({
+                type: "GET_BOOKS",
+                payload: response.data
+            });
+        }).catch(function (err) {
+            dispatch({
+                type: "GET_BOOKS_REJECTED",
+                payload: err
+            });
+        });
     };
 };
 
@@ -10738,9 +10748,18 @@ var postBooks = exports.postBooks = function postBooks(books) {
 
 // DELETE a book
 var deleteBook = exports.deleteBook = function deleteBook(id) {
-    return {
-        type: "DELETE_BOOK",
-        payload: id
+    return function (dispatch) {
+        _axios2.default.delete("book/" + id).then(function (response) {
+            dispatch({
+                type: "DELETE_BOOK",
+                payload: id
+            });
+        }).catch(function (err) {
+            dispatch({
+                type: "DELETE_BOOK_REJECTED",
+                payload: err
+            });
+        });
     };
 };
 
@@ -30719,28 +30738,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var initialState = {
-    books: [{
-        _id: 1,
-        title: "Learn React in 24h",
-        description: "This is the book description",
-        price: 33.33
-    }, {
-        _id: 2,
-        title: "Learn Redux in 24h",
-        description: "This is the book description",
-        price: 45.00
-    }]
-};
-
 //Books Reducers
 var booksReducers = exports.booksReducers = function booksReducers() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+        books: []
+    };
     var action = arguments[1];
 
     switch (action.type) {
         case "GET_BOOKS":
-            return _extends({}, state, { books: [].concat(_toConsumableArray(state.books)) });
+            return _extends({}, state, { books: [].concat(_toConsumableArray(action.payload)) });
         case "POST_BOOK":
             return { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)) };
         case "DELETE_BOOK":

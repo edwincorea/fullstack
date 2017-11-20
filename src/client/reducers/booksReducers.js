@@ -1,25 +1,11 @@
-const initialState = {
-    books: [
-        {
-            _id: 1,
-            title: "Learn React in 24h",
-            description: "This is the book description",
-            price: 33.33
-        },
-        {
-            _id: 2,
-            title: "Learn Redux in 24h",
-            description: "This is the book description",
-            price: 45.00
-        }
-    ]
-};
 
 //Books Reducers
-export const booksReducers = (state = initialState, action) => {
+export const booksReducers = (state = {
+    books:[]
+}, action) => {
     switch(action.type) {
     case "GET_BOOKS":
-        return {...state, books: [...state.books]};
+        return {...state, books: [...action.payload]};
     case "POST_BOOK":
         return {books: [...state.books, ...action.payload]};
     case "DELETE_BOOK": {
