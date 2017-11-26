@@ -13,6 +13,14 @@ body {
     margin: 20px 0;
 }
 
+.navbar-header li {
+    list-style: none;    
+}
+
+.navbar-header a {
+    text-decoration: none;
+}
+
 .badge {
     background-color: #e4aa48;
     margin-left: 10px;
