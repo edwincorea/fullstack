@@ -5466,23 +5466,48 @@ TabContent.childContextTypes = childContextTypes;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.deleteCartItem = exports.updateCart = exports.addToCart = exports.getCart = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _axios = __webpack_require__(360);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 // Add to Cart
 var getCart = exports.getCart = function getCart() {
-    return {
-        type: "GET_CART",
-        payload: []
+    return function (dispatch) {
+        _axios2.default.get("/api/cart").then(function (response) {
+            dispatch({
+                type: "GET_CART",
+                payload: response.data
+            });
+        }).catch(function (err) {
+            dispatch({
+                type: "GET_CART_REJECTED",
+                msg: "error when getting cart items"
+            });
+        });
     };
 };
 
-var addToCart = exports.addToCart = function addToCart(book) {
-    return {
-        type: "ADD_TO_CART",
-        payload: book
+var addToCart = exports.addToCart = function addToCart(cart) {
+    return function (dispatch) {
+        _axios2.default.post("/api/cart", cart).then(function (response) {
+            dispatch({
+                type: "ADD_TO_CART",
+                payload: response.data
+            });
+        }).catch(function (err) {
+            dispatch({
+                type: "ADD_TO_CART_REJECTED",
+                msg: "error when adding item to cart"
+            });
+        });
     };
 };
 
@@ -5502,17 +5527,35 @@ var updateCart = exports.updateCart = function updateCart(_id, unit, cart) {
 
     var updatedCart = [].concat(_toConsumableArray(currentBookToUpdate.slice(0, indexToUpdate)), [newBookToUpdate], _toConsumableArray(currentBookToUpdate.slice(indexToUpdate + 1)));
 
-    return {
-        type: "UPDATE_CART",
-        payload: updatedCart
+    return function (dispatch) {
+        _axios2.default.post("/api/cart", updatedCart).then(function (response) {
+            dispatch({
+                type: "UPDATE_CART",
+                payload: response.data
+            });
+        }).catch(function (err) {
+            dispatch({
+                type: "UPDATE_CART_REJECTED",
+                msg: "error when updating cart"
+            });
+        });
     };
 };
 
 // Delete from Cart
 var deleteCartItem = exports.deleteCartItem = function deleteCartItem(cart) {
-    return {
-        type: "DELETE_CART_ITEM",
-        payload: cart
+    return function (dispatch) {
+        _axios2.default.post("/api/cart", cart).then(function (response) {
+            dispatch({
+                type: "DELETE_CART_ITEM",
+                payload: response.data
+            });
+        }).catch(function (err) {
+            dispatch({
+                type: "DELETE_CART_ITEM_REJECTED",
+                msg: "error when deleting item from the cart"
+            });
+        });
     };
 };
 
