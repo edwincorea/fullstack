@@ -120,6 +120,35 @@ app.delete("/book/:_id", function(req, res) {
 
 });
 
+// Get Book Images 
+app.get("/images", function(req, res){
+    var imagesFolder = __dirname + "/public/images/";
+
+    // Require file system
+    var fs = require("fs");
+    // Read all files in the directory
+    fs.readdir(imagesFolder, function(err, files){
+        if(err) {
+            return console.error(err);
+        }
+
+        // Create an empty array
+        var filesArr = [];
+
+        //Iterate all images in directory and them to array
+        files.forEach(function(file) {
+            filesArr.push({
+                name: file
+            });
+        });
+
+        // Send the JSON response with images
+        res.json(filesArr);
+    });
+});
+
+
+// End APIs
 
 app.listen(3001, function(err){
     if(err) {
