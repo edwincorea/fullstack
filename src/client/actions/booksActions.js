@@ -3,7 +3,7 @@ import axios from "axios";
 // GET books
 export const getBooks = () => {
     return (dispatch) => {
-        axios.get("/book")
+        axios.get("/api/book")
             .then((response) => {
                 dispatch({
                     type: "GET_BOOKS",
@@ -22,7 +22,7 @@ export const getBooks = () => {
 // POST a book
 export const postBooks = (books) => {
     return (dispatch) => {
-        axios.post("/book", books)
+        axios.post("/api/book", books)
             .then((response) => {
                 dispatch({
                     type: "POST_BOOK",
@@ -38,11 +38,29 @@ export const postBooks = (books) => {
     };
 };
 
+// UPDATE a book
+export const updateBook = (id, book) => {
+    return (dispatch) => {
+        axios.put(`/api/book/${id}`, book)
+            .then((response) => {
+                dispatch({
+                    type: "UPDATE_BOOK",
+                    payload: response.data
+                });
+            })
+            .catch((err) => {
+                dispatch({
+                    type: "UPDATE_BOOK_REJECTED",
+                    payload: err
+                });
+            });
+    };
+};
 
 // DELETE a book
 export const deleteBook = (id) => {
     return (dispatch) => {
-        axios.delete(`book/${id}`)
+        axios.delete(`/api/book/${id}`)
             .then((response) => {
                 dispatch({
                     type: "DELETE_BOOK",
@@ -57,9 +75,3 @@ export const deleteBook = (id) => {
             });
     };
 };
-
-// UPDATE a book
-export const updateBook = (book) => ({
-    type: "UPDATE_BOOK", 
-    payload: book
-});
