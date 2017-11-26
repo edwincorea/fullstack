@@ -11000,6 +11000,10 @@ var _reactRedux = __webpack_require__(30);
 
 var _redux = __webpack_require__(22);
 
+var _axios = __webpack_require__(360);
+
+var _axios2 = _interopRequireDefault(_axios);
+
 var _booksActions = __webpack_require__(163);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -11018,29 +11022,56 @@ var BooksForm = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (BooksForm.__proto__ || Object.getPrototypeOf(BooksForm)).call(this, props));
 
+        _this.state = {
+            images: [{}],
+            currentImage: ""
+        };
+
         _this.handleSubmit = _this.handleSubmit.bind(_this);
         _this.onDelete = _this.onDelete.bind(_this);
+        _this.handleSelectImage = _this.handleSelectImage.bind(_this);
         return _this;
     }
 
     _createClass(BooksForm, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            this.props.getBooks();
+
+            // Get images from API
+            _axios2.default.get("/api/images").then(function (response) {
+                _this2.setState({
+                    images: response.data
+                });
+            }).catch(function (err) {
+                _this2.setState({
+                    images: "error loading images from the server",
+                    currentImage: ""
+                });
+            });
+        }
+    }, {
         key: "handleSubmit",
         value: function handleSubmit() {
-            var _this2 = this;
+            var _this3 = this;
 
             var title = (0, _reactDom.findDOMNode)(this.refs.title).value;
             var description = (0, _reactDom.findDOMNode)(this.refs.description).value;
+            var images = (0, _reactDom.findDOMNode)(this.refs.images).value;
             var price = (0, _reactDom.findDOMNode)(this.refs.price).value;
 
             if (title && description && price) {
                 var book = [{
                     title: title,
                     description: description,
+                    images: images,
                     price: price
                 }];
 
                 this.props.postBooks(book, function () {
-                    _this2.props.history.push("/");
+                    _this3.props.history.push("/");
                 });
             }
         }
@@ -11054,8 +11085,17 @@ var BooksForm = function (_React$Component) {
             }
         }
     }, {
+        key: "handleSelectImage",
+        value: function handleSelectImage(imageName) {
+            this.setState({
+                currentImage: "/images/" + imageName
+            });
+        }
+    }, {
         key: "render",
         value: function render() {
+            var _this4 = this;
+
             var bookList = this.props.books.map(function (book) {
                 return _react2.default.createElement(
                     "option",
@@ -11064,83 +11104,127 @@ var BooksForm = function (_React$Component) {
                 );
             });
 
+            var imageList = this.state.images.map(function (image, i) {
+                return _react2.default.createElement(
+                    _reactBootstrap.MenuItem,
+                    {
+                        key: i,
+                        eventKey: image.name,
+                        onClick: function onClick() {
+                            return _this4.handleSelectImage(image.name);
+                        } },
+                    image.name
+                );
+            });
+
             return _react2.default.createElement(
                 _reactBootstrap.Well,
                 null,
                 _react2.default.createElement(
-                    _reactBootstrap.Panel,
+                    _reactBootstrap.Row,
                     null,
                     _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: "title" },
+                        _reactBootstrap.Col,
+                        { xs: 12, sm: 6 },
                         _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
+                            _reactBootstrap.Panel,
                             null,
-                            "Title"
-                        ),
-                        _react2.default.createElement(_reactBootstrap.FormControl, {
-                            type: "text",
-                            placeholder: "Enter Title",
-                            ref: "title" })
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: "description" },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            "Description"
-                        ),
-                        _react2.default.createElement(_reactBootstrap.FormControl, {
-                            type: "text",
-                            placeholder: "Enter Description",
-                            ref: "description" })
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: "price" },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            "Price"
-                        ),
-                        _react2.default.createElement(_reactBootstrap.FormControl, {
-                            type: "text",
-                            placeholder: "Enter Price",
-                            ref: "price" })
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.Button,
-                        { bsStyle: "primary", onClick: this.handleSubmit },
-                        "Save book"
-                    )
-                ),
-                _react2.default.createElement(
-                    _reactBootstrap.Panel,
-                    { style: { marginTop: "25px" } },
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: "formControlsSelect" },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            "Select a book to delete"
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.FormControl,
-                            { ref: "delete", componentClass: "select", placeholder: "select" },
                             _react2.default.createElement(
-                                "option",
-                                { value: "0" },
-                                "select"
+                                _reactBootstrap.InputGroup,
+                                null,
+                                _react2.default.createElement(_reactBootstrap.FormControl, { type: "text", ref: "images", value: this.state.currentImage }),
+                                _react2.default.createElement(
+                                    _reactBootstrap.DropdownButton,
+                                    {
+                                        componentClass: _reactBootstrap.InputGroup.Button,
+                                        id: "input-dropdown-addon",
+                                        title: "Select an image",
+                                        bsStyle: "primary" },
+                                    imageList
+                                )
                             ),
-                            bookList
+                            _react2.default.createElement(_reactBootstrap.Image, { src: this.state.currentImage, responsive: true })
                         )
                     ),
                     _react2.default.createElement(
-                        _reactBootstrap.Button,
-                        { onClick: this.onDelete, bsStyle: "danger" },
-                        "Delete book"
+                        _reactBootstrap.Col,
+                        { xs: 12, sm: 6 },
+                        _react2.default.createElement(
+                            _reactBootstrap.Panel,
+                            null,
+                            _react2.default.createElement(
+                                _reactBootstrap.FormGroup,
+                                { controlId: "title" },
+                                _react2.default.createElement(
+                                    _reactBootstrap.ControlLabel,
+                                    null,
+                                    "Title"
+                                ),
+                                _react2.default.createElement(_reactBootstrap.FormControl, {
+                                    type: "text",
+                                    placeholder: "Enter Title",
+                                    ref: "title" })
+                            ),
+                            _react2.default.createElement(
+                                _reactBootstrap.FormGroup,
+                                { controlId: "description" },
+                                _react2.default.createElement(
+                                    _reactBootstrap.ControlLabel,
+                                    null,
+                                    "Description"
+                                ),
+                                _react2.default.createElement(_reactBootstrap.FormControl, {
+                                    type: "text",
+                                    placeholder: "Enter Description",
+                                    ref: "description" })
+                            ),
+                            _react2.default.createElement(
+                                _reactBootstrap.FormGroup,
+                                { controlId: "price" },
+                                _react2.default.createElement(
+                                    _reactBootstrap.ControlLabel,
+                                    null,
+                                    "Price"
+                                ),
+                                _react2.default.createElement(_reactBootstrap.FormControl, {
+                                    type: "text",
+                                    placeholder: "Enter Price",
+                                    ref: "price" })
+                            ),
+                            _react2.default.createElement(
+                                _reactBootstrap.Button,
+                                { bsStyle: "primary", onClick: this.handleSubmit },
+                                "Save book"
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.Panel,
+                            { style: { marginTop: "25px" } },
+                            _react2.default.createElement(
+                                _reactBootstrap.FormGroup,
+                                { controlId: "formControlsSelect" },
+                                _react2.default.createElement(
+                                    _reactBootstrap.ControlLabel,
+                                    null,
+                                    "Select a book to delete"
+                                ),
+                                _react2.default.createElement(
+                                    _reactBootstrap.FormControl,
+                                    { ref: "delete", componentClass: "select", placeholder: "select" },
+                                    _react2.default.createElement(
+                                        "option",
+                                        { value: "0" },
+                                        "select"
+                                    ),
+                                    bookList
+                                )
+                            ),
+                            _react2.default.createElement(
+                                _reactBootstrap.Button,
+                                { onClick: this.onDelete, bsStyle: "danger" },
+                                "Delete book"
+                            )
+                        )
                     )
                 )
             );
@@ -11158,6 +11242,7 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return (0, _redux.bindActionCreators)({
+        getBooks: _booksActions.getBooks,
         postBooks: _booksActions.postBooks,
         deleteBook: _booksActions.deleteBook
     }, dispatch);
@@ -31727,6 +31812,7 @@ var BooksList = function (_React$Component) {
                         _id: book._id,
                         title: book.title,
                         description: book.description,
+                        images: book.images,
                         price: book.price
                     })
                 );
@@ -31742,11 +31828,6 @@ var BooksList = function (_React$Component) {
                 _react2.default.createElement(
                     _reactBootstrap.Row,
                     null,
-                    _react2.default.createElement(
-                        _reactBootstrap.Col,
-                        { xs: 12, sm: 6 },
-                        _react2.default.createElement(_booksForm2.default, null)
-                    ),
                     booksList
                 )
             );
@@ -43084,6 +43165,7 @@ var BookItem = function (_React$Component) {
                 _id: this.props._id,
                 title: this.props.title,
                 description: this.props.description,
+                images: this.props.images,
                 price: this.props.price,
                 quantity: 1
             }]);
@@ -43118,7 +43200,12 @@ var BookItem = function (_React$Component) {
                     null,
                     _react2.default.createElement(
                         _reactBootstrap.Col,
-                        { xs: 12 },
+                        { xs: 12, sm: 4 },
+                        _react2.default.createElement(_reactBootstrap.Image, { src: this.props.images, responsive: true })
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.Col,
+                        { xs: 6, sm: 8 },
                         _react2.default.createElement(
                             "h6",
                             null,
