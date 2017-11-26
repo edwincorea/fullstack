@@ -1,5 +1,5 @@
 import React from "react";
-import {Modal, Panel, Col, Row, Well, Button, ButtonGroup, Label} from "react-bootstrap";
+import {Modal, Panel, Col, Row, Button, ButtonGroup, Label} from "react-bootstrap";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 
@@ -128,12 +128,12 @@ class Cart extends React.Component {
     }    
     
     onIncrementCartItemQuantity(_id){
-        this.props.updateCart(_id, 1);        
+        this.props.updateCart(_id, 1, this.props.cart);        
     }
 
     onDecrementCartItemQuantity(_id, quantity){
         if (quantity > 1){
-            this.props.updateCart(_id, -1);
+            this.props.updateCart(_id, -1, this.props.cart);
         }        
     }
 

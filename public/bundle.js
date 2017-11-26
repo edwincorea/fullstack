@@ -5466,6 +5466,11 @@ TabContent.childContextTypes = childContextTypes;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 // Add to Cart
 var getCart = exports.getCart = function getCart() {
     return {
@@ -5482,11 +5487,24 @@ var addToCart = exports.addToCart = function addToCart(book) {
 };
 
 // Update to Cart
-var updateCart = exports.updateCart = function updateCart(_id, unit) {
+var updateCart = exports.updateCart = function updateCart(_id, unit, cart) {
+    // Get a copy of current array of books
+    var currentBookToUpdate = cart;
+
+    // Get index of book to delete
+    var indexToUpdate = currentBookToUpdate.findIndex(function (book) {
+        return book._id === _id;
+    });
+
+    var newBookToUpdate = _extends({}, currentBookToUpdate[indexToUpdate], {
+        quantity: currentBookToUpdate[indexToUpdate].quantity + unit
+    });
+
+    var updatedCart = [].concat(_toConsumableArray(currentBookToUpdate.slice(0, indexToUpdate)), [newBookToUpdate], _toConsumableArray(currentBookToUpdate.slice(indexToUpdate + 1)));
+
     return {
         type: "UPDATE_CART",
-        _id: _id,
-        unit: unit
+        payload: updatedCart
     };
 };
 
@@ -11714,13 +11732,13 @@ var Cart = function (_React$Component) {
     }, {
         key: "onIncrementCartItemQuantity",
         value: function onIncrementCartItemQuantity(_id) {
-            this.props.updateCart(_id, 1);
+            this.props.updateCart(_id, 1, this.props.cart);
         }
     }, {
         key: "onDecrementCartItemQuantity",
         value: function onDecrementCartItemQuantity(_id, quantity) {
             if (quantity > 1) {
-                this.props.updateCart(_id, -1);
+                this.props.updateCart(_id, -1, this.props.cart);
             }
         }
     }, {
@@ -31517,8 +31535,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 //Cart Reducers
 var cartReducers = exports.cartReducers = function cartReducers() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { cart: [] };
@@ -31551,26 +31567,12 @@ var cartReducers = exports.cartReducers = function cartReducers() {
             }
         case "UPDATE_CART":
             {
-                // Get a copy of current array of books
-                var currentBookToUpdate = [].concat(_toConsumableArray(state.cart));
-
-                // Get index of book to delete
-                var indexToUpdate = currentBookToUpdate.findIndex(function (book) {
-                    return book._id === action._id;
-                });
-
-                var newBookToUpdate = _extends({}, currentBookToUpdate[indexToUpdate], {
-                    quantity: currentBookToUpdate[indexToUpdate].quantity + action.unit
-                });
-
-                var updatedCart = [].concat(_toConsumableArray(currentBookToUpdate.slice(0, indexToUpdate)), [newBookToUpdate], _toConsumableArray(currentBookToUpdate.slice(indexToUpdate + 1)));
-
-                var _calculateTotals3 = calculateTotals(updatedCart),
+                var _calculateTotals3 = calculateTotals(action.payload),
                     _amount2 = _calculateTotals3.amount,
                     _qty2 = _calculateTotals3.qty;
 
                 return _extends({}, state, {
-                    cart: updatedCart,
+                    cart: action.payload,
                     totalAmount: _amount2,
                     totalQty: _qty2
                 });
@@ -43055,7 +43057,7 @@ var BookItem = function (_React$Component) {
                     this.props.addToCart(book);
                 } else {
                     // only update quantity
-                    this.props.updateCart(_id, 1);
+                    this.props.updateCart(_id, 1, this.props.cart);
                 }
             } else {
                 // empty cart

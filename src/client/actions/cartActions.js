@@ -10,11 +10,31 @@ export const addToCart = (book) => ({
 });
 
 // Update to Cart
-export const updateCart = (_id, unit) => ({
-    type: "UPDATE_CART", 
-    _id,
-    unit 
-});
+export const updateCart = (_id, unit, cart) => {    
+    // Get a copy of current array of books
+    const currentBookToUpdate = cart;
+    
+    // Get index of book to delete
+    const indexToUpdate = currentBookToUpdate.findIndex(
+        book => book._id === _id
+    );
+
+    const newBookToUpdate = {
+        ...currentBookToUpdate[indexToUpdate],
+        quantity: currentBookToUpdate[indexToUpdate].quantity + unit
+    };
+
+    const updatedCart = [
+        ...currentBookToUpdate.slice(0, indexToUpdate), 
+        newBookToUpdate,  
+        ...currentBookToUpdate.slice(indexToUpdate + 1)
+    ];
+    
+    return {
+        type: "UPDATE_CART", 
+        payload: updatedCart
+    };
+};
 
 // Delete from Cart
 export const deleteCartItem = (cart) => ({
