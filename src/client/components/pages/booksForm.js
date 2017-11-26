@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import axios from "axios";
 
-import {getBooks, postBooks, deleteBook} from "../../actions/booksActions";
+import {getBooks, postBooks, deleteBook, resetButton} from "../../actions/booksActions";
 
 class BooksForm extends React.Component {
     constructor(props) {
@@ -19,6 +19,7 @@ class BooksForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.handleSelectImage = this.handleSelectImage.bind(this);        
+        this.cleanForm = this.cleanForm.bind(this);        
     }
 
     componentDidMount() {
@@ -71,6 +72,16 @@ class BooksForm extends React.Component {
         this.setState({
             currentImage: `/images/${imageName}`
         });
+    }
+
+    cleanForm() {        
+        findDOMNode(this.refs.title).value = "";
+        findDOMNode(this.refs.description).value = "";
+        findDOMNode(this.refs.price).value = "";
+        this.setState({
+            currentImage: ""
+        });
+        this.props.resetButton();
     }
 
     render() {
@@ -130,7 +141,11 @@ class BooksForm extends React.Component {
                                     placeholder="Enter Price"
                                     ref="price" />           
                             </FormGroup>   
-                            <Button bsStyle="primary" onClick={this.handleSubmit}>Save book</Button>
+                            <Button 
+                                bsStyle={!this.props.style ? "primary" : this.props.style}
+                                onClick={!this.props.msg ? this.handleSubmit : this.cleanForm}>
+                                {!this.props.msg ? "Save book" : this.props.msg}
+                            </Button>
                         </Panel>
                         <Panel style={{marginTop: "25px"}}>
                             <FormGroup controlId="formControlsSelect">
@@ -151,7 +166,9 @@ class BooksForm extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        books: state.books.books
+        books: state.books.books,
+        msg: state.books.msg,
+        style: state.books.style
     };
 };
 
@@ -159,7 +176,8 @@ const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
         getBooks,
         postBooks,
-        deleteBook
+        deleteBook,
+        resetButton
     }, dispatch);
 };
 

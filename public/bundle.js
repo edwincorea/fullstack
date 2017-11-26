@@ -11030,6 +11030,7 @@ var BooksForm = function (_React$Component) {
         _this.handleSubmit = _this.handleSubmit.bind(_this);
         _this.onDelete = _this.onDelete.bind(_this);
         _this.handleSelectImage = _this.handleSelectImage.bind(_this);
+        _this.cleanForm = _this.cleanForm.bind(_this);
         return _this;
     }
 
@@ -11090,6 +11091,17 @@ var BooksForm = function (_React$Component) {
             this.setState({
                 currentImage: "/images/" + imageName
             });
+        }
+    }, {
+        key: "cleanForm",
+        value: function cleanForm() {
+            (0, _reactDom.findDOMNode)(this.refs.title).value = "";
+            (0, _reactDom.findDOMNode)(this.refs.description).value = "";
+            (0, _reactDom.findDOMNode)(this.refs.price).value = "";
+            this.setState({
+                currentImage: ""
+            });
+            this.props.resetButton();
         }
     }, {
         key: "render",
@@ -11193,8 +11205,10 @@ var BooksForm = function (_React$Component) {
                             ),
                             _react2.default.createElement(
                                 _reactBootstrap.Button,
-                                { bsStyle: "primary", onClick: this.handleSubmit },
-                                "Save book"
+                                {
+                                    bsStyle: !this.props.style ? "primary" : this.props.style,
+                                    onClick: !this.props.msg ? this.handleSubmit : this.cleanForm },
+                                !this.props.msg ? "Save book" : this.props.msg
                             )
                         ),
                         _react2.default.createElement(
@@ -11236,7 +11250,9 @@ var BooksForm = function (_React$Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
-        books: state.books.books
+        books: state.books.books,
+        msg: state.books.msg,
+        style: state.books.style
     };
 };
 
@@ -11244,7 +11260,8 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return (0, _redux.bindActionCreators)({
         getBooks: _booksActions.getBooks,
         postBooks: _booksActions.postBooks,
-        deleteBook: _booksActions.deleteBook
+        deleteBook: _booksActions.deleteBook,
+        resetButton: _booksActions.resetButton
     }, dispatch);
 };
 
@@ -11260,7 +11277,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.deleteBook = exports.updateBook = exports.postBooks = exports.getBooks = undefined;
+exports.resetButton = exports.deleteBook = exports.updateBook = exports.postBooks = exports.getBooks = undefined;
 
 var _axios = __webpack_require__(360);
 
@@ -11333,6 +11350,13 @@ var deleteBook = exports.deleteBook = function deleteBook(id) {
                 payload: err
             });
         });
+    };
+};
+
+// RESET form button
+var resetButton = exports.resetButton = function resetButton() {
+    return {
+        type: "RESET_BUTTON"
     };
 };
 
@@ -31612,7 +31636,11 @@ var booksReducers = exports.booksReducers = function booksReducers() {
         case "GET_BOOKS":
             return _extends({}, state, { books: [].concat(_toConsumableArray(action.payload)) });
         case "POST_BOOK":
-            return { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)) };
+            return _extends({}, state, { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)), msg: "Saved! Click to continue.", style: "success" });
+        case "POST_BOOK_REJECTED":
+            return _extends({}, state, { msg: "Please, try again.", style: "danger" });
+        case "RESET_BUTTON":
+            return _extends({}, state, { msg: null, style: "primary" });
         case "DELETE_BOOK":
             {
                 // Get a copy of current books

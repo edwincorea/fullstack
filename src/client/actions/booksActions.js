@@ -75,3 +75,11 @@ export const deleteBook = (id) => {
             });
     };
 };
+
+// RESET form button
+export const resetButton = () => {
+    return {
+        type:"RESET_BUTTON"
+    };
+};
+  
