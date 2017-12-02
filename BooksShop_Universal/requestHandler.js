@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import {createStore} from "redux";
 import {Provider} from "react-redux";
@@ -7,8 +8,6 @@ import {renderToString} from "react-dom/server";
 // import {match, RouterContext} from "react-router";
 //React-Router 4
 import {StaticRouter} from "react-router-dom";
-
-import axios from "axios";
 
 import reducers from "./src/client/reducers";
 import routes from "./src/client/routes";
