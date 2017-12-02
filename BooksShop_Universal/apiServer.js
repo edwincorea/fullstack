@@ -18,7 +18,7 @@ var mongooseConnectionOptions = {
     // If not connected, return errors immediately rather than waiting for reconnect
     bufferMaxEntries: 0
 };
-mongoose.connect("mongodb://localhost:27017/bookshop", mongooseConnectionOptions);
+mongoose.connect("mongodb://testUser:test@ds129066.mlab.com:29066/bookshop", mongooseConnectionOptions);
 
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "# MongoDB - connection error: "));

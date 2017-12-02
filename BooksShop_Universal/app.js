@@ -27,7 +27,7 @@ app.use("/api", function(req, res){
 app.use(favicon(path.join(__dirname, "public", "favicon.png")));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.set("view engine", "ejs");
+app.set("view engine", "pug");
 
 app.use(requestHandler);
 
