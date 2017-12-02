@@ -13,32 +13,18 @@ import reducers from "./reducers";
 //Step 1: create the store
 const middleware = applyMiddleware(thunk, logger);
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// We will pass initial state from server store
+const initialState = window.INITIAL_STATE;
 const store = createStore(
     reducers, 
+    initialState,
     composeEnhancers(middleware)
 );
 
-import BooksList from "./components/pages/booksList";
-import Cart from "./components/pages/cart";
-import BooksForm from "./components/pages/booksForm";
-
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import Menu from "./components/menu";
-import Footer from "./components/footer";
-
+import routes from "./routes";
 const Root = (
     <Provider store={store}>
-        <Router>
-            <div>
-                <Menu />
-                <Switch>
-                    <Route exact path="/" component={BooksList}/>
-                    <Route path="/admin" component={BooksForm}/>
-                    <Route path="/cart" component={Cart}/>
-                </Switch>
-                <Footer />
-            </div>
-        </Router>
+        {routes}
     </Provider>
 );
 
