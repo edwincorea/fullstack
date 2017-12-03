@@ -55,7 +55,7 @@ function handleRender(req, res) {
 
             //React-Router 4
             const context = {};
-            //console.log("How context looks like? ", context.url);
+            console.log("How context looks like? ", context.url);
             const reactComponent = renderToString(
                 <Provider store={store}>
                     <StaticRouter

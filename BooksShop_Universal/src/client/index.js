@@ -1,7 +1,9 @@
 // React
 import React from "react";
-import {render} from "react-dom";
+import {render, hydrate} from "react-dom";
 import {Provider} from "react-redux";
+// React-Router 4
+import {BrowserRouter} from "react-router-dom";
 
 import {applyMiddleware, compose, createStore} from "redux";
 import logger from "redux-logger";
@@ -16,16 +18,18 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // We will pass initial state from server store
 const initialState = window.INITIAL_STATE;
 const store = createStore(
-    reducers, 
+    reducers,     
     initialState,
     composeEnhancers(middleware)
 );
 
 import routes from "./routes";
-const Root = (
+const Routes = (
     <Provider store={store}>
-        {routes}
+        <BrowserRouter>    
+            {routes}
+        </BrowserRouter>
     </Provider>
 );
 
-render(Root, document.getElementById("app"));
+hydrate(Routes, document.getElementById("app"));
